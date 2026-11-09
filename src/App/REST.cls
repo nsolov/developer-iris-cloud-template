@@ -3,7 +3,7 @@ Class App.REST Extends %CSP.REST
 
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
-<Routes>
+<Routes> 
     <Route Url="/status" Method="GET" Call="getStatus" />
 </Routes>
 }
