@@ -4,6 +4,7 @@ Class App.Init
 Parameter VARIABLE = "APP_MESSAGE";
 
 /// Called by Developer Cloud after every successful IRIS start.
+/// APP:##class(App.Init).run()
 ClassMethod run() As %Status
 {
     set variableValue = $system.Util.GetEnviron(..#VARIABLE)
