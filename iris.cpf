@@ -1,0 +1,7 @@
+[Actions]
+CreateResource:Name=%DB_APP,PublicPermission=RW
+CreateDatabase:Name=APP-CODE,Directory=/usr/irissys/mgr/APP-CODE,ResourceName=%DB_APP
+CreateDatabase:Name=APP-DATA,Directory=/data,ResourceName=%DB_APP
+CreateNamespace:Name=APP,Globals=APP-DATA,Routines=APP-CODE
+CreateApplication:Name=/api,NameSpace=APP,DispatchClass=App.REST,CSPZENEnabled=1,Enabled=1,AutheEnabled=64
+

@@ -1,0 +1,10 @@
+set $namespace = "APP"
+
+write !,"Importing and compiling application classes",!
+set sc = $system.OBJ.ImportDir("/opt/app/src", "*.cls", "ck", .errors, 1)
+do:$system.Status.IsError(sc) $system.OBJ.DisplayError(sc)
+do:$system.Status.IsError(sc) ##class(%SYSTEM.Process).Terminate(, 1)
+
+write !,"Application image initialized",!
+halt
+
