@@ -1,4 +1,4 @@
-ARG IRIS_IMAGE=intersystemsdc/iris-community:2025.3
+ARG IRIS_IMAGE=intersystemsdc/iris-community:2026.2
 FROM ${IRIS_IMAGE}
 
 USER root
