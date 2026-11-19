@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        IRIS_IMAGE: ${IRIS_IMAGE:-intersystemsdc/iris-community:2025.3}
+        IRIS_IMAGE: ${IRIS_IMAGE:-intersystemsdc/iris-community:2026.2}
     command: --check-caps false --ISCAgent false
     environment:
       APP_MESSAGE: ${APP_MESSAGE:-Hello from Docker Compose}

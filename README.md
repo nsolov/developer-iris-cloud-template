@@ -1,15 +1,16 @@
-# Minimal InterSystems IRIS Developer Cloud template
+# Developer Sandbox Example TODO
 
-This repository is a deliberately small IRIS REST application that can be used
-as a starting point for a deployment on
+This repository is a small, ready-to-use TODO application that can be used as a
+starting point for a deployment on
 [Developer Cloud](https://cloud.sandbox.developer.intersystems.com/).
 
-It demonstrates the platform-specific pieces that an application normally
-needs:
+Open the deployment and you immediately get an English-language web UI where
+tasks can be listed, added, and deleted. The application demonstrates:
 
-- a persistent application database at `/data`;
+- persistent application data stored in IRIS at `/data`;
+- a static browser UI served by the bundled web server;
+- a JSON REST API with list, create, and delete operations;
 - reading a variable configured in the Developer Cloud UI;
-- one public REST endpoint;
 - an IRIS init method that records every successful start.
 
 ## Deploy to Developer Cloud
@@ -22,13 +23,16 @@ Create a deployment from this Git repository and use these settings:
 | Variable name | `APP_MESSAGE` |
 | Variable value | Any non-empty value |
 
-After the deployment starts, open:
+After the deployment starts, open its root URL:
 
 ```text
-https://<deployment>.sandbox.developer.intersystems.com/api/status
+https://<deployment>.sandbox.developer.intersystems.com/
 ```
 
-Example response:
+The init method creates three sample tasks the first time a new persistent
+database starts. They can be deleted and will not be recreated on later starts.
+
+Runtime details, including `APP_MESSAGE`, are available from `/api/status`:
 
 ```json
 {
@@ -44,7 +48,8 @@ Example response:
 }
 ```
 
-For demonstration purposes, the endpoint returns the value of `APP_MESSAGE`.
+For demonstration purposes, the status endpoint shows the value of
+`APP_MESSAGE`.
 Do not use this pattern for passwords, tokens, or other secret variables in a
 real application.
 
@@ -65,8 +70,9 @@ Developer Cloud recognizes `/data` as persistent storage. Rebuilding or
 redeploying the image replaces `APP-CODE`, but retains `APP-DATA`. Therefore the
 `runCount` returned by the REST endpoint continues increasing across deploys.
 
-The init method saves a row in `App.Data.StartupEvent` after every successful
-IRIS start. The configured variable is read in ObjectScript with:
+TODO items are instances of the persistent `App.Data.Todo` class. The init
+method also saves a row in `App.Data.StartupEvent` after every successful IRIS
+start. The configured variable is read in ObjectScript with:
 
 ```objectscript
 set value = $system.Util.GetEnviron("APP_MESSAGE")
@@ -78,8 +84,9 @@ Start the application:
 
 ```shell
 docker compose up --build -d
-curl http://localhost:52773/api/status
 ```
+
+Open [http://localhost:52773/](http://localhost:52773/) in a browser.
 
 Developer Cloud invokes the init method itself. For the same demonstration
 locally, invoke it once after IRIS starts:
@@ -91,6 +98,16 @@ do:$system.Status.IsError(sc) $system.OBJ.DisplayError(sc)
 halt
 EOF
 curl http://localhost:52773/api/status
+```
+
+The TODO API can also be used directly:
+
+```shell
+curl http://localhost:52773/api/todos
+curl -X POST http://localhost:52773/api/todos \
+  -H 'Content-Type: application/json' \
+  --data '{"text":"Try the Developer Sandbox example"}'
+curl -X DELETE http://localhost:52773/api/todos/1
 ```
 
 Stop the local container:
@@ -110,7 +127,12 @@ Dockerfile                       Builds a self-contained IRIS image
 iris.cpf                         Database, namespace, and web app configuration
 iris.script                      Imports and compiles ObjectScript classes
 src/App/Init.cls                 Developer Cloud post-start method
-src/App/REST.cls                 GET /api/status
+src/App/REST.cls                 Status and TODO REST endpoints
 src/App/Data/StartupEvent.cls    Persistent startup records
+src/App/Data/Todo.cls            Persistent TODO items
+web/index.html                   Static TODO page
+web/app.css                      Shared frontend styles
+web/app.js                       TODO frontend behavior
+httpd-local.conf                 Root URL mapping to the static entry point
 docker-compose.yml               Optional local development environment
 ```

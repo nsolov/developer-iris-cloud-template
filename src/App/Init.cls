@@ -12,7 +12,9 @@ ClassMethod run() As %Status
     set event.StartedAt = ##class(%Library.UTC).NowUTC()
     set event.VariableName = ..#VARIABLE
     set event.VariableIsSet = (variableValue '= "")
-    return event.%Save()
+    set sc = event.%Save()
+    return:$system.Status.IsError(sc) sc
+    return ##class(App.Data.Todo).seed()
 }
 
 }

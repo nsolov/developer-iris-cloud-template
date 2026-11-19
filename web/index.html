@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Sandbox Example TODO</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><span class="logo">DS</span> Developer Sandbox Example TODO</a>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Things to do.</h1>
+      <p class="subtitle">A tiny persistent app powered by InterSystems IRIS.</p>
+    </section>
+    <section class="panel">
+      <form id="todo-form">
+        <input id="todo-input" maxlength="200" autocomplete="off" placeholder="What needs to be done?" aria-label="New todo" required>
+        <button id="add-button" type="submit">Add task</button>
+      </form>
+      <div id="status" role="status">Loading tasks...</div>
+      <ul id="todo-list"></ul>
+    </section>
+    <footer>Data is stored in the persistent APP-DATA database.</footer>
+  </main>
+</body>
+</html>
